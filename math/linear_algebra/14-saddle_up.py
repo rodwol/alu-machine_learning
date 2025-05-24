@@ -5,7 +5,7 @@
 import numpy as np
 
 
-def np_matmu(mat1, mat2):
+def np_matmul(mat1, mat2):
     """ function that performs matrix multiplication of
         two numpy arrays without using loops or conditionals
     """
