@@ -4,4 +4,4 @@
 
 def np_transpose(matrix):
     """ function that transposes a matrix using NumPy """
-    return [list(row) for row in zip(*matrix)]
+    return list(map(list, zip(*matrix)))

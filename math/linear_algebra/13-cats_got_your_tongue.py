@@ -4,6 +4,7 @@
 """
 import numpy as np
 
+
 def np_cat(mat1, mat2, axis=0):
     """ concatenates two arrays along the given axis without
     using any loops or conditionals
