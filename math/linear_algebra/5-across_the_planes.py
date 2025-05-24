@@ -6,7 +6,11 @@ def add_matrices2D(mat1, mat2):
     """ adds two matrices element-wise """
     if len(mat1) != len(mat2):
         return None
-    
+
+    for row1, row2 in zip(mat1, mat2):
+        if len(row1) != len(row2):
+            return None
+
     result = [[0 for _ in range(len(mat1[0]))] for _ in range(len(mat1))]
     for i in range(len(mat1)):
         for j in range(len(mat1[0])):

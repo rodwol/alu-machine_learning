@@ -20,7 +20,7 @@ def cat_matrices2D(mat1, mat2, axis=0):
             return None
 
         new_matrix = [mat1[i].copy() + mat2[i].copy() for i in
-range(len(mat1))]
+                      range(len(mat1))]
     else:
         return None
     return new_matrix
