@@ -3,7 +3,7 @@
 
 
 def cofactor(matrix):
-    # Check if the input is a list of lists
+    """ calculates the cofactor matrix of a matrix """
     if not isinstance(matrix, list) or \
        not all(isinstance(row, list) for row in matrix):
         raise TypeError("matrix must be a list of lists")
@@ -15,11 +15,11 @@ def cofactor(matrix):
     for row in matrix:
         if len(row) != rows:
             raise ValueError("matrix must be a non-empty square matrix")
- 
+
     # Handle 1x1 matrix case
     if rows == 1:
         return [[1]]  # The cofactor matrix of a 1x1 matrix is [[1]]
-    
+
     cofactor_matrix = []
     for i in range(rows):
         cofactor_row = []

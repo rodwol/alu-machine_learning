@@ -11,7 +11,8 @@ def definiteness(matrix):
 
     if len(matrix.shape) != 2 or matrix.shape[0] != matrix.shape[1]:
         return None
-
+    if not np.allclose(matrix, matrix.T):
+        return None
     # Calculate eigenvalues
     try:
         eigenvalues = np.linalg.eigvalsh(matrix)

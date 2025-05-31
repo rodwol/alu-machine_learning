@@ -14,19 +14,19 @@ def inverse(matrix):
     for row in matrix:
         if len(row) != rows:
             raise ValueError("matrix must be a non-empty square matrix")
-    
+
     # Calculate the determinant of the matrix
     det = determinant(matrix)
     if det == 0:
         return None  # Matrix is singular
-    
+
     # Handle 1x1 matrix case
     if rows == 1:
         return [[1 / matrix[0][0]]]
-    
+
     # Compute the adjugate matrix
     adjugate_matrix = adjugate(matrix)
-    
+
     inverse_matrix = []
     for i in range(rows):
         inverse_row = []
@@ -71,11 +71,11 @@ def adjugate(matrix):
             sign = (-1) ** (i + j)
             cofactor_row.append(sign * det)
         cofactor_matrix.append(cofactor_row)
-    
+
     # Transpose the cofactor matrix to get the adjugate matrix
     adjugate_matrix = [[0 for _ in range(rows)] for _ in range(rows)]
     for i in range(rows):
         for j in range(rows):
             adjugate_matrix[j][i] = cofactor_matrix[i][j]
-    
+
     return adjugate_matrix
