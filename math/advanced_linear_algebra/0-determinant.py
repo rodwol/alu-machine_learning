@@ -1,12 +1,12 @@
-#!/user/bin/env python3
+#!/usr/bin/env python3
 """ function that calculates the minor matrix of a matrix """
 
 
 def minor(matrix):
     """ minor of the given matrix """
 
-    if not isinstance(matrix, list) or not all(isinstance(row, list) for row
-    in matrix):
+    if not isinstance(matrix, list) or
+           not all(isinstance(row, list) for row in matrix):
         raise TypeError("matrix must be a list of lists")
     if len(matrix) == 0 or any(len(row) != len(matrix) for row in matrix):
         raise ValueError("matrix must be a non-empty square matrix")
@@ -30,8 +30,9 @@ def minor(matrix):
         minor_row = []
         for j in range(size):
             # Create submatrix by excluding i-th row and j-th column
-            submatrix = [row[:j] + row[j+1:] for idx, row in
-                        enumerate(matrix) if idx != i]
+            submatrix = [
+                row[:j] + row[j+1:] for idx, row in enumerate(matrix) if idx != i
+            ]
             minor_value = determinant(submatrix)
             minor_row.append(minor_value)
         minor_matrix.append(minor_row)
