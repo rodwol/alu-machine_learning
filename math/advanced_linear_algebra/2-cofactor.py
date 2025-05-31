@@ -37,6 +37,7 @@ def cofactor(matrix):
 
 
 def determinant(matrix):
+    """ calculates the cofactor matrix of a matrix """
     n = len(matrix)
     # Base case for 1x1 matrix
     if n == 1:
