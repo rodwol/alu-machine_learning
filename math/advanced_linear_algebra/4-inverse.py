@@ -5,7 +5,7 @@
 def inverse(matrix):
     """ calculates the inverse of a matrix """
     if not isinstance(matrix, list) or \
-           not all(isinstance(row, list) for row in matrix):
+       not all(isinstance(row, list) for row in matrix):
         raise TypeError("matrix must be a list of lists")
     
     rows = len(matrix)
