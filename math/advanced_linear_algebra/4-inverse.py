@@ -5,7 +5,7 @@
 def inverse(matrix):
     """ calculates the inverse of a matrix """
     if not isinstance(matrix, list) or not all(isinstance(row, list) 
-    for row in matrix):
+        for row in matrix):
         raise TypeError("matrix must be a list of lists")
     
     rows = len(matrix)
@@ -33,10 +33,12 @@ def inverse(matrix):
         for j in range(rows):
             inverse_row.append(adjugate_matrix[i][j] / det)
         inverse_matrix.append(inverse_row)
-    
+
     return inverse_matrix
 
+
 def determinant(matrix):
+    """ calculates the inverse of a matrix """
     n = len(matrix)
     # Base case for 1x1 matrix
     if n == 1:
@@ -51,7 +53,9 @@ def determinant(matrix):
         det += (-1) ** j * matrix[0][j] * determinant(submatrix)
     return det
 
+
 def adjugate(matrix):
+    """ calculates the inverse of a matrix """
     rows = len(matrix)
     # Compute the cofactor matrix
     cofactor_matrix = []

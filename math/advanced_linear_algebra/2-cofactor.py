@@ -1,13 +1,13 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """ calculates the cofactor matrix of a matrix """
 
 
 def cofactor(matrix):
     # Check if the input is a list of lists
     if not isinstance(matrix, list) or not all(isinstance(row, list)
-    for row in matrix):
+        for row in matrix):
         raise TypeError("matrix must be a list of lists")
-    
+
     # Check if the matrix is square and non-empty
     rows = len(matrix)
     if rows == 0:
@@ -15,7 +15,7 @@ def cofactor(matrix):
     for row in matrix:
         if len(row) != rows:
             raise ValueError("matrix must be a non-empty square matrix")
-    
+ 
     # Handle 1x1 matrix case
     if rows == 1:
         return [[1]]  # The cofactor matrix of a 1x1 matrix is [[1]]
@@ -33,6 +33,7 @@ def cofactor(matrix):
             cofactor_row.append(sign * det)
         cofactor_matrix.append(cofactor_row)
     return cofactor_matrix
+
 
 def determinant(matrix):
     n = len(matrix)

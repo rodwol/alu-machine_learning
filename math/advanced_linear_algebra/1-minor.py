@@ -3,11 +3,11 @@
 
 
 def minor(matrix):
-    # Check if the input is a list of lists
+    """ calculates the minor matrix of a matrix """
     if not isinstance(matrix, list) or not all(isinstance(row, list)
-    for row in matrix):
+        for row in matrix):
         raise TypeError("matrix must be a list of lists")
-    
+
     # Check if the matrix is square and non-empty
     rows = len(matrix)
     if rows == 0:
@@ -15,24 +15,26 @@ def minor(matrix):
     for row in matrix:
         if len(row) != rows:
             raise ValueError("matrix must be a non-empty square matrix")
-    
+
     # Handle 1x1 matrix case
     if rows == 1:
         return [[1]]  #
-    
+
     minor_matrix = []
     for i in range(rows):
         minor_row = []
         for j in range(rows):
-            # Create the submatrix by excluding the i-th row and j-th column
-            submatrix = [row[:j] + row[j+1:] for row in (matrix[:i] + matrix[i+1:])]
+            submatrix = [row[:j] + row[j+1:] for row in
+                        (matrix[:i] + matrix[i+1:])]
             # Calculate the determinant of the submatrix
             det = determinant(submatrix)
             minor_row.append(det)
         minor_matrix.append(minor_row)
     return minor_matrix
 
+
 def determinant(matrix):
+    """ calculates the minor matrix of a matrix """
     n = len(matrix)
     # Base case for 1x1 matrix
     if n == 1:

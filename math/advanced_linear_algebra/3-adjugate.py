@@ -3,11 +3,11 @@
 
 
 def adjugate(matrix):
-    # Check if the input is a list of lists
+    """ calculates the adjugate matrix of a matrix """
     if not isinstance(matrix, list) or not all(isinstance(row, list)
-    for row in matrix):
+        for row in matrix):
         raise TypeError("matrix must be a list of lists")
-    
+
     # Check if the matrix is square and non-empty
     rows = len(matrix)
     if rows == 0:
@@ -40,7 +40,9 @@ def adjugate(matrix):
     
     return adjugate_matrix
 
+
 def determinant(matrix):
+    """ calculates the adjugate matrix of a matrix """
     n = len(matrix)
     # Base case for 1x1 matrix
     if n == 1:
