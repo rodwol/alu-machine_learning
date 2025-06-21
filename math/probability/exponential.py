@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """ class Exponential that represents an exponential distribution """
-import math
 
 
 class Exponential:
@@ -21,13 +20,22 @@ class Exponential:
             self.lambtha = 1 / mean
 
     def pdf(self, x):
-        """Calculates the PDF at a given time period x"""
         if x < 0:
             return 0
-        return self.lambtha * math.exp(-self.lambtha * x)
+        return self.lambtha * self._exp(-self.lambtha * x)
 
     def cdf(self, x):
-        """Calculates the CDF at a given time period x"""
         if x < 0:
             return 0
-        return 1 - math.exp(-self.lambtha * x)
+        return 1 - self._exp(-self.lambtha * x)
+
+    def _exp(self, x, terms=20):
+        """Approximate exp(x) using Taylor series expansion"""
+        result = 1.0
+        numerator = 1.0
+        denominator = 1.0
+        for i in range(1, terms):
+            numerator *= x
+            denominator *= i
+            result += numerator / denominator
+        return result

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """ class Binomial that represents a binomial distribution """
-import math
 
 
 class Binomial:
@@ -31,19 +30,32 @@ class Binomial:
             self.n = n
             self.p = p
 
+    def _comb(self, n, k):
+        """Calculates combination n choose k without using math.comb"""
+        if k > n:
+            return 0
+        if k == 0 or k == n:
+            return 1
+        k = min(k, n - k)  # symmetry property
+        c = 1
+        for i in range(k):
+            c = c * (n - i) // (i + 1)
+        return c
+
     def pmf(self, k):
-        """Calculates the PMF for a given number of successes k"""
         k = int(k)
         if k < 0 or k > self.n:
             return 0
-        nCk = math.comb(self.n, k)
+        nCk = self._comb(self.n, k)
         return nCk * (self.p ** k) * ((1 - self.p) ** (self.n - k))
 
     def cdf(self, k):
-        """Calculates the CDF for a given number of successes k"""
         k = int(k)
         if k < 0:
             return 0
         if k >= self.n:
             k = self.n
-        return sum(self.pmf(i) for i in range(0, k + 1))
+        total = 0
+        for i in range(k + 1):
+            total += self.pmf(i)
+        return total
