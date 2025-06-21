@@ -22,68 +22,32 @@ class Normal:
             self.stddev = variance ** 0.5
 
     def z_score(self, x):
+        """ calculates z value """
         return (x - self.mean) / self.stddev
 
     def x_value(self, z):
+        """ calculates x value """
         return z * self.stddev + self.mean
 
     def pdf(self, x):
-        exponent = -0.5 * ((x - self.mean) / self.stddev) ** 2
-        coeff = 1 / (self.stddev * self._sqrt(2 * self._pi()))
-        return coeff * self._exp(exponent)
+        """ calculates the value of the PDF """
+        mean = self.mean
+        stddev = self.stddev
+        e = 2.7182818285
+        pi = 3.1415926536
+        power = -0.5 * (self.z_score(x) ** 2)
+        coefficient = 1 / (stddev * ((2 * pi) ** (1 / 2)))
+        pdf = coefficient * (e ** power)
+        return pdf
 
     def cdf(self, x):
-        z = (x - self.mean) / (self.stddev * self._sqrt(2))
-        return 0.5 * (1 + self._erf(z))
-
-    def _sqrt(self, x, eps=1e-10):
-        """Compute square root using the Babylonian method"""
-        if x < 0:
-            raise ValueError("Cannot compute sqrt of negative number")
-        guess = x
-        if guess == 0:
-            return 0.0
-        while True:
-            next_guess = 0.5 * (guess + x / guess)
-            if abs(next_guess - guess) < eps:
-                return next_guess
-            guess = next_guess
-
-    def _exp(self, x, terms=20):
-        """Approximate exp(x) using Taylor series"""
-        result = 1.0
-        numerator = 1.0
-        denominator = 1.0
-        for i in range(1, terms):
-            numerator *= x
-            denominator *= i
-            result += numerator / denominator
-        return result
-
-    def _pi(self):
-        """Return an approximation of pi"""
-        pi_approx = 0.0
-        for k in range(1000):
-            pi_approx += ((-1) ** k) / (2 * k + 1)
-        return 4 * pi_approx
-
-    def _erf(self, x):
-        """Approximate error function"""
-        # constants
-        a1 =  0.254829592
-        a2 = -0.284496736
-        a3 =  1.421413741
-        a4 = -1.453152027
-        a5 =  1.061405429
-        p  =  0.3275911
-
-        sign = 1
-        if x < 0:
-            sign = -1
-            x = -x
-
-        t = 1.0 / (1.0 + p * x)
-        y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2)\
-            * t + a1) * t * self._exp(-x * x)
-
-        return sign * y
+        """ calculates the value of the CDF """
+        mean = self.mean
+        stddev = self.stddev
+        pi = 3.1415926536
+        value = (x - mean) / (stddev * (2 ** (1 / 2)))
+        erf = value - ((value ** 3) / 3) + ((value ** 5) / 10)
+        erf = erf - ((value ** 7) / 42) + ((value ** 9) / 216)
+        erf *= (2 / (pi ** (1 / 2)))
+        cdf = (1 / 2) * (1 + erf)
+        return cdf

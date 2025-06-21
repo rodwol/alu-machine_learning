@@ -20,22 +20,15 @@ class Exponential:
             self.lambtha = 1 / mean
 
     def pdf(self, x):
+        """ calculates the value of pdf """
         if x < 0:
             return 0
-        return self.lambtha * self._exp(-self.lambtha * x)
+        e = 2.7182818285
+        return self.lambtha * (e **(-self.lambtha * x))
 
     def cdf(self, x):
+        """ calculates the value of cdf """
         if x < 0:
             return 0
-        return 1 - self._exp(-self.lambtha * x)
-
-    def _exp(self, x, terms=20):
-        """Approximate exp(x) using Taylor series expansion"""
-        result = 1.0
-        numerator = 1.0
-        denominator = 1.0
-        for i in range(1, terms):
-            numerator *= x
-            denominator *= i
-            result += numerator / denominator
-        return result
+        e = 2.7182818285
+        return 1 - (e ** (-self.lambtha * x))
