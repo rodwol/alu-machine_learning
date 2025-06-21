@@ -43,6 +43,7 @@ class Binomial:
         return c
 
     def pmf(self, k):
+        """ calculates the pmf """
         k = int(k)
         if k < 0 or k > self.n:
             return 0
@@ -50,6 +51,7 @@ class Binomial:
         return nCk * (self.p ** k) * ((1 - self.p) ** (self.n - k))
 
     def cdf(self, k):
+        """ calculates the cdf """
         k = int(k)
         if k < 0:
             return 0

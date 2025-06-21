@@ -29,9 +29,9 @@ class Poisson:
 
     def exp(self, x):
         """Computes e^x using Taylor series (13 terms)."""
-        n_terms = 50
-        result = 1
-        term = 1
+        n_terms = 100
+        result = 1.0
+        term = 1.0
         for n in range(1, n_terms):
             term *= x / n
             result += term
