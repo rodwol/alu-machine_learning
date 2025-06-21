@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """ class Poisson that represents a poisson distribution """
+import math
 
 
 class Poisson:
@@ -9,7 +10,7 @@ class Poisson:
         """ initializes the poisson distribution """
         if data is None:
             if lambtha <= 0:
-                raise ValueError("lambda must be a positive value")
+                raise ValueError("lambtha must be a positive value")
             self.lambtha = float(lambtha)
         else:
             if not isinstance(data, list):
