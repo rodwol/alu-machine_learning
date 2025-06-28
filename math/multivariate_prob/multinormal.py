@@ -1,32 +1,31 @@
 #!/usr/bin/env python3
-""" class that represents a Multivariate Normal distribution """
+"""
+Defines class MultiNormal that represents a Multivariate Normal Distribution
+"""
 import numpy as np
 
 
 class MultiNormal:
     """
-    Represents a Multivariate Normal distribution.
+    Class that represents Multivariate Normal Distribution
     """
-
     def __init__(self, data):
         """
-        Initializes the distribution with mean and covariance from the dataset.
+        Class constructor
         """
-        # Input validation
         if type(data) is not np.ndarray or len(data.shape) != 2:
             raise TypeError("data must be a 2D numpy.ndarray")
-
         d, n = data.shape
         if n < 2:
             raise ValueError("data must contain multiple data points")
-
-        self.mean = np.mean(data, axis=1, keepdims=True)
+        mean = np.mean(data, axis=1, keepdims=True)
+        self.mean = mean
         cov = np.matmul(data - mean, data.T - mean.T) / (n - 1)
         self.cov = cov
 
     def pdf(self, x):
         """
-        Calculates the PDF at a given data point x.
+        Calculates the PDF at a data point
         """
         if type(x) is not np.ndarray:
             raise TypeError("x must be a numpy.ndarray")
