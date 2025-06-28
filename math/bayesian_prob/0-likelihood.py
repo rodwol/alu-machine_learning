@@ -3,6 +3,7 @@
     for each hypothetical probability in P. """
 import numpy as np
 
+
 def likelihood(x, n, P):
     """
     Calculates the likelihood of obtaining the data, x and n,

@@ -11,7 +11,7 @@ def likelihood(x, n, P):
     """
     def factorial(k):
         return np.math.factorial(k)
-    
+
     binom_coeff = factorial(n) / (factorial(x) * factorial(n - x))
     return binom_coeff * (P ** x) * ((1 - P) ** (n - x))
 
@@ -26,7 +26,7 @@ def intersection(x, n, P, Pr):
         raise ValueError("n must be a positive integer")
     if not isinstance(x, int) or x < 0:
         raise ValueError("x must be an integer that is "
-                          "greater than or equal to 0")
+                         "greater than or equal to 0")
     if x > n:
         raise ValueError("x cannot be greater than n")
     if not isinstance(P, np.ndarray) or P.ndim != 1:
