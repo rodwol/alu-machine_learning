@@ -4,12 +4,12 @@ binary classification """
 import numpy as np
 
 
-class Nueron:
+class Neuron:
     """
     class that defines a single neuron performing
     binary classification """
     def __init__(self, nx):
-        if not nx isinstance(nx, int):
+        if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
         if nx < 1:
             raise ValueError("nx must be a positive integer")

@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/usr/bin/env python3
 """
 class Neuron that defines a single neuron performing binary classification
 """
@@ -37,6 +37,7 @@ class Neuron:
         return self.__A
 
     def forward_prop(self, X):
+        """ Calculates forward propagation of the neuron """
         Z = np.matmul(self.__W, X) + self.__b
         self.__A = 1 / (1 + np.exp(-Z))  # Sigmoid activation
         return self.__A

@@ -10,7 +10,7 @@ class Neuron:
     Class that defines a single neuron performing binary classification
     """
     def __init__(self, nx):
-        if not nx isinstance(nx, int):
+        if not isinstance(nx, int):
             raise TypeError("nx must be a integer")
         if nx < 1:
             raise ValueError("nx must be positive")
