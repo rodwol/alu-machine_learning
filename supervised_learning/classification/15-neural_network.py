@@ -81,7 +81,7 @@ class NeuralNetwork:
         """
         m = Y.shape[1]
         cost = -(1/m) * np.sum(
-            Y * np.log(A) + (1- Y) * np.log(1.0000001 - A)
+            Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A)
         )
         return cost
 
