@@ -49,8 +49,9 @@ class Neuron:
             Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A)
         )
         return cost
+
     def evaluate(self, X, Y):
-    """ Evaluates the neuron's predictions """
+        """ Evaluates the neuron's predictions """
         A = self.forward_prop(X)  # forward propagation
         cost = self.cost(Y, A)    # compute cost
         prediction = np.where(A >= 0.5, 1, 0)  # threshold at 0.5

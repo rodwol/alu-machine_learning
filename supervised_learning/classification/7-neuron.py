@@ -3,12 +3,16 @@
 Class that defines a single neuron performing binary classification
 """
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 class Neuron:
     """Class that defines a single neuron performing binary classification"""
 
     def __init__(self, nx):
+        """
+        Initialize the neuron
+        """
         if not isinstance(nx, int):
             raise TypeError("nx must be a integer")
         if nx < 1:
@@ -36,13 +40,16 @@ class Neuron:
         return self.__A
 
     def forward_prop(self, X):
-        """ Calculates forward propagation of the neuron """
+        """
+        Calculates forward propagation of the neuron
+        """
         Z = np.matmul(self.__W, X) + self.__b
         self.__A = 1 / (1 + np.exp(-Z))  # Sigmoid activation
         return self.__A
 
     def cost(self, Y, A):
-        """ calculated the cost of the model using logistic regression
+        """
+        Calculates the cost of the model using logistic regression
         """
         m = Y.shape[1]
         cost = -(1 / m) * np.sum(
@@ -51,7 +58,9 @@ class Neuron:
         return cost
 
     def evaluate(self, X, Y):
-        """ Evaluates the neuron's predictions """
+        """
+        Evaluates the neuron's predictions
+        """
         A = self.forward_prop(X)
         cost = self.cost(Y, A)
         prediction = np.where(A >= 0.5, 1, 0)
@@ -62,7 +71,6 @@ class Neuron:
         Performs one pass of gradient descent on the neuron
         """
         m = Y.shape[1]
-
         dZ = A - Y
         dW = (1 / m) * np.matmul(dZ, X.T)
         db = (1 / m) * np.sum(dZ)
@@ -70,8 +78,12 @@ class Neuron:
         self.__W -= alpha * dW
         self.__b -= alpha * db
 
-    def train(self, X, Y, iterations=5000, alpha=0.05):
-        """ trains the neuron """
+    def train(self, X, Y, iterations=5000, alpha=0.05,
+              verbose=True, graph=True, step=100):
+        """
+        Trains the neuron
+        """
+        # --- Input validation ---
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
         if iterations < 1:
@@ -81,8 +93,33 @@ class Neuron:
         if alpha <= 0:
             raise ValueError("alpha must be positive")
 
-        for _ in range(iterations):
+        if verbose or graph:
+            if not isinstance(step, int):
+                raise TypeError("step must be an integer")
+            if step < 1 or step > iterations:
+                raise ValueError("step must be positive and <= iterations")
+
+        # --- Training ---
+        costs = []
+        steps = []
+
+        for i in range(iterations + 1):  # include 0th iteration
             A = self.forward_prop(X)
-            self.gradient_descent(X, Y, A, alpha)
+            if i % step == 0 or i == iterations:
+                c = self.cost(Y, A)
+                costs.append(c)
+                steps.append(i)
+                if verbose:
+                    print(f"Cost after {i} iterations: {c}")
+            if i < iterations:  # skip update after last iteration
+                self.gradient_descent(X, Y, A, alpha)
+
+        # --- Graphing ---
+        if graph:
+            plt.plot(steps, costs, 'b-')
+            plt.xlabel("iteration")
+            plt.ylabel("cost")
+            plt.title("Training Cost")
+            plt.show()
 
         return self.evaluate(X, Y)
