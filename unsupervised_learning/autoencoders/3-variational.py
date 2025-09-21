@@ -2,7 +2,7 @@
 """
 Variational Autoencoder (VAE) implementation in Keras
 """
-import tensorflow as tf
+import tensorflow.keras as keras
 
 
 def autoencoder(input_dims, hidden_layers, latent_dims):
