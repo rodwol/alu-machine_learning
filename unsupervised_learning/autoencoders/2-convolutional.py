@@ -1,61 +1,81 @@
 #!/usr/bin/env python3
 """
-convolutional autoencoder with symmetric encoder/decoder
+Defines function that creates a convolutional autoencoder
 """
-import tensorflow as tf
-from tensorflow.keras import layers, Model
+import tensorflow.keras as keras
 
 
 def autoencoder(input_dims, filters, latent_dims):
     """
-    Creates a convolutional autoencoder.
+    Creates a convolutional autoencoder
     """
+    if type(input_dims) is not tuple:
+        raise TypeError(
+            "input_dims must be tuple of ints containing dimensions of \
+            model input")
+    for dim in input_dims:
+        if type(dim) is not int:
+            raise TypeError("input_dims must be tuple of ints containing \
+            dimensions of model input")
+    if type(filters) is not list:
+        raise TypeError("filters must be a list of ints \
+        representing number of filters for each convolutional layer")
+    for number_filter in filters:
+        if type(number_filter) is not int:
+            raise TypeError("filters must be a list of ints \
+            representing number of filters for each convolutional layer")
+    if type(latent_dims) is not tuple:
+        raise TypeError("latent_dims must be an int containing \
+        dimensions of latent space representation")
+    for dim in latent_dims:
+        if type(dim) is not int:
+            raise TypeError("latent_dims must be an int containing \
+            dimensions of latent space representation")
 
-    # ----- Encoder -----
-    input_layer = layers.Input(shape=input_dims)
-    x = input_layer
-    for f in filters:
-        x = layers.Conv2D(filters=f, kernel_size=(3, 3),
-                          padding="same", activation="relu")(x)
-        x = layers.MaxPooling2D(pool_size=(2, 2), padding="same")(x)
-    # Latent space
-    shape_before_flatten = x.shape[1:]  # save for decoder reshaping
-    x = layers.Flatten()(x)
-    latent = layers.Dense(tf.math.reduce_prod(latent_dims),
-                          activation="relu")(x)
-    latent = layers.Reshape(latent_dims)(latent)
-    encoder = Model(inputs=input_layer, outputs=latent, name="encoder")
+    # encoder
+    encoder_inputs = keras.Input(shape=(input_dims))
+    encoder_value = encoder_inputs
+    for i in range(len(filters)):
+        encoder_layer = keras.layers.Conv2D(filters[i],
+                                            activation='relu',
+                                            kernel_size=(3, 3),
+                                            padding='same')
+        encoder_value = encoder_layer(encoder_value)
+        encoder_pooling_layer = keras.layers.MaxPooling2D((2, 2),
+                                                          padding='same')
+        encoder_value = encoder_pooling_layer(encoder_value)
+    encoder_outputs = encoder_value
+    encoder = keras.Model(inputs=encoder_inputs, outputs=encoder_outputs)
 
-    # ----- Decoder -----
-    latent_inputs = layers.Input(shape=latent_dims)
-    x = latent_inputs
-    x = layers.Flatten()(x)
-    x = layers.Dense(tf.math.reduce_prod(shape_before_flatten),
-                                         activation="relu")(x)
-    x = layers.Reshape(shape_before_flatten)(x)
+    # decoder
+    decoder_inputs = keras.Input(shape=(latent_dims))
+    decoder_value = decoder_inputs
+    for i in range(len(filters) - 1, 0, -1):
+        decoder_layer = keras.layers.Conv2D(filters[i],
+                                            activation='relu',
+                                            kernel_size=(3, 3),
+                                            padding='same')
+        decoder_value = decoder_layer(decoder_value)
+        decoder_upsample_layer = keras.layers.UpSampling2D((2, 2))
+        decoder_value = decoder_upsample_layer(decoder_value)
+    decoder_last_layer = keras.layers.Conv2D(filters[0],
+                                             kernel_size=(3, 3),
+                                             padding='valid',
+                                             activation='relu')
+    decoder_value = decoder_last_layer(decoder_value)
+    decoder_upsample_layer = keras.layers.UpSampling2D((2, 2))
+    decoder_value = decoder_upsample_layer(decoder_value)
+    decoder_output_layer = keras.layers.Conv2D(input_dims[2],
+                                               activation='sigmoid',
+                                               kernel_size=(3, 3),
+                                               padding='same')
+    decoder_outputs = decoder_output_layer(decoder_value)
+    decoder = keras.Model(inputs=decoder_inputs, outputs=decoder_outputs)
 
-    for i, f in enumerate(reversed(filters)):
-        if i < len(filters) - 1:  # all but last two
-            x = layers.Conv2D(filters=f, kernel_size=(3, 3),
-                              padding="same", activation="relu")(x)
-            x = layers.UpSampling2D(size=(2, 2))(x)
-        elif i == len(filters) - 1:  # second-to-last conv
-            x = layers.Conv2D(filters=f, kernel_size=(3, 3),
-                padding="valid", activation="relu")(x)
-
-    # Last layer (reconstruction)
-    output_layer = layers.Conv2D(filters=input_dims[-1], kernel_size=(3, 3),
-                                 padding="same", activation="sigmoid")(x)
-    decoder = Model(inputs=latent_inputs, outputs=output_layer,
-              name="decoder")
-
-    # ----- Autoencoder -----
-    auto_input = layers.Input(shape=input_dims)
-    encoded = encoder(auto_input)
-    decoded = decoder(encoded)
-    auto = Model(inputs=auto_input, outputs=decoded, name="autoencoder")
-
-    # Compile model
-    auto.compile(optimizer="adam", loss="binary_crossentropy")
+    # autoencoder
+    inputs = encoder_inputs
+    auto = keras.Model(inputs=inputs, outputs=decoder(encoder(inputs)))
+    auto.compile(optimizer='adam',
+                 loss='binary_crossentropy')
 
     return encoder, decoder, auto
