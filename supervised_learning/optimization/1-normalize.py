@@ -11,6 +11,6 @@ def normalize(X, m, s):
     Args:
         X (np.ndarray): Input data of shape (n_samples, n_features).
         m (np.ndarray): Mean of each feature of shape (n_features,).
-        s (np.ndarray): Standard deviation of each feature of shape (n_features,).
+        s (np.ndarray): Standard deviation of each feature of shape.
     """
     return (X-m)/s

@@ -7,7 +7,8 @@ import numpy as np
 
 
 def moving_average(data, beta):
-    """Calculate the weighted moving average of a data set with bias correction.
+    """Calculate the weighted moving average of a
+    data set with bias correction.
 
     Args:
         data (list): List of data points.
@@ -15,8 +16,8 @@ def moving_average(data, beta):
     """
     v = 0
     moving_averages = []
-    for t, x in enumerate(data, 1):
-        v = beta * v + (1 - beta) * x
-        v_corrected = v / (1 - beta**t)
-        moving_averages.append(v_corrected)
-    return np.array(moving_averages)
+    for x in range(len(data)):
+        v = beta * v + (1 - beta) * data[x]
+        v_corrected = 1 - (beta** (x + 1))
+        moving_averages.append(v/v_corrected)
+    return moving_averages

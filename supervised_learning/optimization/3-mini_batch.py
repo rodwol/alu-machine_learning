@@ -25,7 +25,8 @@ def train_mini_batch(x_train, y_train, x_valid, y_valid,
         train_op = tf.get_collection("trian_op")[0]
 
         m = x_train.shape[0]
-        steps_per_epoch = m // batch_size + (m % batch_size != 0)
+        if x_train.shape[0] % batch_size != 0:
+            size += 1
 
         for epoch in range(epochs + 1):
             train_cost = sess.run(loss, feed_dict={x: x_train, y: y_train})
@@ -40,22 +41,25 @@ def train_mini_batch(x_train, y_train, x_valid, y_valid,
 
             if epoch < epochs:
                 X_shuffled, Y_shuffled = shuffle_data(x_train, y_train)
-                for step in range(steps_per_epoch):
+                for step in range(size):
                     start = step * batch_size
                     end = start + batch_size
                     sess.run(train_op,
                              feed_dict={x: X_shuffled[start:end],
                                         y: Y_shuffled[start:end]})
-                    
-                    if (step + 1) % 100 == 0 and step != 0:
+
+                    if (step + 1) % 100 == 0 and step > 0:
                         step_cost = sess.run(loss,
-                                             feed_dict={x: X_shuffled[start:end],
-                                                        y: Y_shuffled[start:end]})
+                                             feed_dict=
+                                             {x: X_shuffled[start:end],
+                                              y: Y_shuffled[start:end]})
                         step_acc = sess.run(accuracy,
-                                            feed_dict={x: X_shuffled[start:end],
-                                                       y: Y_shuffled[start:end]})
+                                            feed_dict={
+                                                x: X_shuffled[start:end],
+                                                y: Y_shuffled[start:end]})
                         print("\tStep {}:".format(step + 1))
                         print("\t\tCost: {}".format(step_cost))
                         print("\t\tAccuracy: {}".format(step_acc))
 
         return saver.save(sess, save_path)
+        
