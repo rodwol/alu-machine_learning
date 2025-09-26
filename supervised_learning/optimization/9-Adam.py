@@ -5,7 +5,7 @@ updates a variable using the adam optimization algorithm
 import numpy as np
 
 
-def update_variable_Adam(alpha, beta1, beta2, epsilon, var, grad, v, s, t):
+def update_variables_Adam(alpha, beta1, beta2, epsilon, var, grad, v, s, t):
     """
     updates a variable using the Adam optimization algorithm
     """

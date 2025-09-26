@@ -19,5 +19,5 @@ def moving_average(data, beta):
     for x in range(len(data)):
         v = beta * v + (1 - beta) * data[x]
         v_corrected = 1 - (beta** (x + 1))
-        moving_averages.append(v/v_corrected)
+        moving_averages.append(v / v_corrected)
     return moving_averages

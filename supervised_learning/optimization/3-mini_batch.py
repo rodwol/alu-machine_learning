@@ -6,7 +6,7 @@ import tensorflow as tf
 shuffle_data = __import__('2-shuffle_data').shuffle_data
 
 
-def train_mini_batch(x_train, y_train, x_valid, y_valid,
+def train_mini_batch(X_train, Y_train, X_valid, Y_valid,
                      batch_size=32, epochs=5,
                      load_path="/tmp/model.ckpt",
                      save_path="/tmp/model.ckpt"):
@@ -24,15 +24,15 @@ def train_mini_batch(x_train, y_train, x_valid, y_valid,
         loss = tf.get_collection("loss")[0]
         train_op = tf.get_collection("trian_op")[0]
 
-        m = x_train.shape[0]
-        if x_train.shape[0] % batch_size != 0:
+        m = X_train.shape[0]
+        if X_train.shape[0] % batch_size != 0:
             size += 1
 
         for epoch in range(epochs + 1):
-            train_cost = sess.run(loss, feed_dict={x: x_train, y: y_train})
-            train_acc = sess.run(accuracy, feed_dict={x: x_train, y: y_train})
-            valid_cost = sess.run(loss, feed_dict={x: x_valid, y: y_valid})
-            valid_acc = sess.run(accuracy, feed_dict={x: x_valid, y: y_valid})
+            train_cost = sess.run(loss, feed_dict={x: X_train, y: Y_train})
+            train_acc = sess.run(accuracy, feed_dict={x: X_train, y: Y_train})
+            valid_cost = sess.run(loss, feed_dict={x: X_valid, y: Y_valid})
+            valid_acc = sess.run(accuracy, feed_dict={x: X_valid, y: Y_valid})
             print("After {} epochs:".format(epoch))
             print("\tTraining Cost: {}".format(train_cost))
             print("\tTraining Accuracy: {}".format(train_acc))
@@ -40,7 +40,7 @@ def train_mini_batch(x_train, y_train, x_valid, y_valid,
             print("\tValidation Accuracy: {}".format(valid_acc))
 
             if epoch < epochs:
-                X_shuffled, Y_shuffled = shuffle_data(x_train, y_train)
+                X_shuffled, Y_shuffled = shuffle_data(X_train, X_train)
                 for step in range(size):
                     start = step * batch_size
                     end = start + batch_size
