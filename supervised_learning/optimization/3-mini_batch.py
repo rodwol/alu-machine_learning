@@ -50,4 +50,3 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid,
                         print("\t\tCost: {}".format(cost))
                         print("\t\tAccuracy: {}".format(acc))
         return saver.save(sess, save_path)
-        
