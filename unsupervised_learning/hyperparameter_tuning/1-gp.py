@@ -45,4 +45,3 @@ class GaussianProcess():
         cov_s = cov_s.diagonal()
 
         return mu_s, cov_s
-    

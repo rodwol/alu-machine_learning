@@ -31,4 +31,3 @@ class BayesianOptimization:
 
         # minimization versus maximization
         self.minimize = minimize
-        

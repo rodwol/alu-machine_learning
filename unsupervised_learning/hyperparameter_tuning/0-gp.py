@@ -30,4 +30,3 @@ class GaussianProcess:
         sqdist = a + b - 2 * c
         # Compute the covariance kernel matrix using the RBF kernel formula
         return self.sigma_f**2 * np.exp(-0.5 / self.l**2 * sqdist)
-    
