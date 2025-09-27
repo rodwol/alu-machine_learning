@@ -9,14 +9,12 @@ def create_batch_norm_layer(prev, n, activation):
     Creates a dense layer with batch normalization in TensorFlow 2.x
     """
     # Dense layer
-    dense = tf.keras.layers.Dense(
-        units=n,
-        kernel_initializer=tf.keras.initializers.VarianceScaling
-        (scale=1.0, mode="fan_avg")
-    )(prev)
-
-    # Batch normalization
-    bn = tf.keras.layers.BatchNormalization(axis=-1)(dense)
-
-    # Apply activation
-    return activation(bn)
+    init = tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
+    model = tf.layers.Dense(units=n, kernel_initializer=init)
+    Z = model(prev)
+    gamma = tf.Variable(tf.constant(1.0, shape=[n]), name='gamma')
+    beta = tf.Variable(tf.constant(0.0, shape=[n]), name='beta')
+    mean, variance = tf.nn.moments(Z, axes=[0])
+    epsilon = 1e-8
+    Z_norm = tf.nn.batch_normalization(Z, mean, variance, beta, gamma, epsilon)
+    return activation(Z_norm)
