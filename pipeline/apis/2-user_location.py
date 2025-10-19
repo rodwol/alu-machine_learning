@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 Fetches and prints the location of a GitHub user using the GitHub API.
 """
