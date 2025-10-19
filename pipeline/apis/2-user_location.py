@@ -1,51 +1,25 @@
 #!/usr/bin/env python3
-"""
-Fetches and prints the location of a GitHub user using the GitHub API.
-"""
-import sys
+
+
+""" Return list of ships"""
+
 import requests
-from datetime import datetime
+import sys
+import time
 
 
-'''return user's location'''
-if __name__ == '__main__':
-    '''return user's location'''
-    if len(sys.argv) != 2:
-        print("Usage: ./2-user_location.py <GitHub API user URL>")
-        sys.exit(1)
+if __name__ == "__main__":
+    res = requests.get(sys.argv[1])
 
-    url = sys.argv[1]
+    if res.status_code == 403:
+        rate_limit = int(res.headers.get('X-Ratelimit-Reset'))
+        current_time = int(time.time())
+        diff = (rate_limit - current_time) // 60
+        print("Reset in {} min".format(diff))
+        # get remaining rate
 
-    try:
-        response = requests.get(url)
-    except requests.RequestException as e:
-        print("Error:", e)
-        sys.exit(1)
-
-    # Handle rate limit
-    if response.status_code == 403:
-        reset_time = response.headers.get("X-RateLimit-Reset")
-        if reset_time:
-            reset_timestamp = int(reset_time)
-            current_time = int(datetime.now().timestamp())
-            minutes_left = int((reset_timestamp - current_time) / 60)
-            print(f"Reset in {minutes_left} min")
-        else:
-            print("Rate limit exceeded.")
-        sys.exit(0)
-
-    # Handle user not found
-    if response.status_code == 404:
+    elif res.status_code == 404:
         print("Not found")
-        sys.exit(0)
-
-    # Handle successful response
-    if response.status_code == 200:
-        user_data = response.json()
-        location = user_data.get("location")
-        if location:
-            print(location)
-        else:
-            print("No location found")
-    else:
-        print("Error:", response.status_code)
+    elif res.status_code == 200:
+        res = res.json()
+        print(res['location'])
