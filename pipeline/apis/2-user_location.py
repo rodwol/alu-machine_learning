@@ -2,12 +2,14 @@
 """
 Fetches and prints the location of a GitHub user using the GitHub API.
 """
-
 import sys
 import requests
 from datetime import datetime
 
+
+'''return user's location'''
 if __name__ == '__main__':
+    '''return user's location'''
     if len(sys.argv) != 2:
         print("Usage: ./2-user_location.py <GitHub API user URL>")
         sys.exit(1)
