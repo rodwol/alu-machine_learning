@@ -8,7 +8,7 @@ from collections import defaultdict
 
 def get_rocket_name():
     '''return rockets with their num of launches'''
-    url = 'https://api.spacexdata.com/v4/launches'
+    url = 'https://api.spacexdata.com/v5/launches'
     response = requests.get(url)
     rockets = defaultdict(int)
     for launch in response.json():
