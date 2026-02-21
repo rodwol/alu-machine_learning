@@ -1,1 +1,0 @@
-Neutral style transfer
